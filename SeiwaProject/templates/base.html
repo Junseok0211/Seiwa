@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    a{
+      text-decoration: none !important;
+    }
+    a:active, a:hover, a:visited{color: black !important;}
+    .content{
+        flex:70%;
+        padding: 40px;
+    }
+    .aside{
+        flex:30%;
+        padding: 40px;
+    }
+    
+    html, body{
+      
+        height:100%;
+    }
+    body{
+        margin-left: 10% !important;
+        margin-right: 10% !important;
+        display: flex;
+        flex-direction: column;
+        background:lightslategray;
+    }
+    .foot{
+        flex-shrink: 0;
+    }
+
+    #main{
+      display: flex;
+      flex-direction: row;
+      height: 20%;
+      margin-top:20px;
+      margin-bottom:20px;
+    }
+    .today_word{
+      flex:80%;
+      border: 1px solid lightgray;
+      background-image: linear-gradient(to right, #2c3e50, #3498db);
+      border-radius: 10px;
+    }
+    .id{
+      flex:20%;
+      margin-left: 30px;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid lightgray;
+      border-radius: 10px;
+      background: gray;
+    }
+
+    #body{
+      display:flex;
+      flex-direction: row;
+      height: 65%;
+      margin-bottom: 20px;
+      
+    }
+    .content{
+      flex:80%;
+      overflow: scroll;
+      border-width: 5px 1px 1px 1px;
+      border-style: solid;
+      border-color:lightgray;
+      border-top-color: #0c6401;
+      
+    }
+    .event{
+      flex:20%;
+      border: 1px solid lightgray;
+      margin-left: 30px;
+    }
+    .footer{
+      display: flex;
+      flex-direction: row;
+      height: 15%;
+      padding: 20px;
+      background: lightskyblue;
+    }
+
+    .eventdiv{
+      display: flex;
+      flex-direction: row;
+    }
+    .information{
+      display: flex;
+      flex-direction: column;
+    }
+  </style>
+  <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    
+</head>
+<body>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+            <a class="navbar-brand" href="#">
+                {% load static %}
+                <img src="{% static 'brand.png' %}" width="100px" height="30" alt="seiwa">
+            </a>
+          <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item active">
+              <a class="nav-link" href="{% url 'index' %}">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              {% if user.is_anonymous %}
+              <a class="nav-link" href="{% url 'signup' %}">글쓰기</a>
+           
+              {% else %}
+              <a class="nav-link" href="{% url 'new' %}">글쓰기</a>
+              {% endif %}
+            </li>
+            <li class="nav-item">
+              <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">이벤트등록</a>
+            </li>
+          </ul>
+          <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+          </form>
+        </div>
+      </nav>
+
+      <div id="main">
+        <article class="today_word">
+          <h2 style="text-align: center; color:white;">오늘의 명언</h2>
+          <p style="text-align: center; color:white; text-family:kcc-eunyoung;">{{word}}</p>
+          
+        </article>
+        <aside class="id">
+          {% if user.is_anonymous %}
+          <div style="display: flex; justify-content:center; position: relative; top:10px;">
+            {% load static %}
+            <img width="50px;" height="50px" src="{% static 'basic_profile.png' %}" class="rounded-circle" alt="User">
+          </div>
+          <div style="display:flex; flex-direction:row; justify-content:center; position: relative; top:20px;">
+            <button type="button" class="btn btn-outline-light">
+              <a class="nav-link" href="{% url 'signin' %}">로그인</a></button>
+            <button type="button" class="btn btn-outline-light" href="{% url 'signup' %}">
+              <a class="nav-link" href="{% url 'signup' %}">회원가입</a></button>
+          </div>
+          
+          {% else %}
+          <div style="display: flex; justify-content:center; position: relative; top:10px;">
+            {% load static %}
+            <img width="50px;" height="50px" src= "{% static 'basic_profile.png' %}" class="rounded-circle" alt="User">
+          </div>
+          <div style="display:flex; flex-direction:row; justify-content:center; position: relative; top:20px;">
+            <a class="nav-link" href="#" tabindex="-1">{{ user.username }}님!!!</a>
+            <button type="button" class="btn btn-outline-light">
+                <a class="nav-link" href="{% url 'logout' %}">로그아웃</a></button>
+          </div>
+          {% endif %}
+          
+
+        </aside>
+      </div>
+      <div id="body">
+      {% block content %}
+
+      {% endblock %}
+      
+        <aside class="event">
+          <div class="eventdiv">
+            <div>
+              {% load static %}
+             <img src="{% static 'basic_profile.png' %}" width="60px" height="60px" alt="hello">
+            </div>
+            <div class="information">
+              <h2>칠일절</h2>
+              <p>2019.08.01</p>
+            </div>
+          </div> 
+        </aside>
+      </div>
+      <footer class="footer">
+        <div style="flex: 30%;">
+          {% load static %}
+          <img src="{% static 'brand.png' %}" alt="Seiwa" width="100%" height="100%">
+        </div>
+        <div style="flex:70%;">
+          <div style="margin-bottom: 5px;">
+            <a href="">도움방 |</a>
+            <a href="">후원하기 |</a>
+            <a href="">이용약관 |</a>
+            <a href="">개인정보취급방침 |</a>
+          </div>
+          <p><strong>
+            도로명주소 : 전주시 덕진구 아중로 180 |
+            성화 홈페이지 문의: 010-5050-9042<br>
+            문의가능시간: 월~금 09:00~19:00  메일:didwnstjr213@naver.com
+          </strong></p>
+          <p></p>
+        </div>
+      </footer>
+
+</body>
+</html>

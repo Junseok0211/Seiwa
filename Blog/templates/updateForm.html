@@ -1,0 +1,7 @@
+
+<form action = "{% url 'update' post.id %}">
+    제목 : <input type="text" rows= "30" name="title" value="{{post.title}}"><br>
+    내용 : <textarea name = "content" rows="30" cols = "50">{{post.content}}</textarea>
+    <button type="submit">수정하기</button>
+    <button type="reset">초기화</button>
+</form>
